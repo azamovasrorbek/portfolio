@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+<html lang="uz" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Prototypes — Dr. Asror Azam</title>
+  <meta name="description" content="Prototype gallery of Dr. Asror Azam — AI Engineering student portfolio." />
+  <link rel="stylesheet" href="{% static 'css/gallery.css' %}" />
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <img src="{% static 'images/1.jpg' %}" alt="Profile" class="brand-mark" />
+      <div>
+        <h1 class="name">Dr. Asror Azam</h1>
+        <p class="subtitle">AI Engineering Trailblazer</p>
+      </div>
+    </div>
+    <nav class="top-nav" role="navigation" aria-label="Main">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'research' %}">Research</a>
+      <a href="{% url 'prototypes' %}">Prototypes</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" role="main">
+    <section class="panel gallery-page">
+      <h2>Prototype Gallery</h2>
+
+      <div class="grid">
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">✦</div>
+          <figcaption>
+            <strong>Spec-Sim</strong>
+            <p>Interactive toolkit for speculative simulation between models and artifacts.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">⚙</div>
+          <figcaption>
+            <strong>DriftBoard</strong>
+            <p>Spatial sketchboard that evolves with AI suggestions for co-creative ideation.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">◎</div>
+          <figcaption>
+            <strong>SenseLayer</strong>
+            <p>Sensor fusion wrapper combining wearables and generative feedback for experiments.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">⎔</div>
+          <figcaption>
+            <strong>NeuralCanvas</strong>
+            <p>Generative sketching canvas guided by neural network priors.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <small>© <time id="year"></time> Dr. Asror Azam — AI Engineering Portfolio</small>
+  </footer>
+
+  <script src="{% static 'js/gallery.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html lang="uz" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Email Me — Dr. Asror Azam</title>
+  <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <h1 class="name">Dr. Asror Azam</h1>
+      <p class="subtitle">AI ENGINEERING TRAILBLAZER</p>
+    </div>
+    <nav class="top-nav">
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'research' %}">Research</a>
+      <a href="{% url 'prototypes' %}">Prototypes</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+  </header>
+
+  <main class="panel">
+    <section class="contact glass">
+      <h2>Send me an Email</h2>
+      <p>You can reach me directly at <a href="mailto:aazamov621@gmail.com">aazamov621@gmail.com</a>.</p>
+      <p>Or use the form below:</p>
+      <form id="email-form" class="form" action="mailto:aazamov621@gmail.com" method="post" enctype="text/plain">
+        <label>
+          Name
+          <input type="text" name="name" required>
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+        <label>
+          Message
+          <textarea name="message" rows="5" required></textarea>
+        </label>
+        <button type="submit" class="btn">Send Email</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© {{ current_year }} Dr. Asror Azam Ism — experimental portfolio</small>
+  </footer>
+</body>
+</html>

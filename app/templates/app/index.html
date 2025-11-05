@@ -1,0 +1,684 @@
+{% load static %}
+<!doctype html>
+<html lang="uz" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Asrorbek Azamov - Student Leader & Innovator</title>
+  <meta name="description" content="17-year-old student leader, researcher, and social entrepreneur from Uzbekistan with expertise in education, environmental advocacy, and youth development." />
+  <style>
+    :root{
+      --bg:#05060a;
+      --glass-1: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --accent-1: #7ef9ff;
+      --accent-2: #6b60ff;
+      --muted: #9aa0b4;
+      --card-radius: 14px;
+      --fw-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--fw-sans);
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(110,90,255,0.06), transparent 10%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(126,249,255,0.03), transparent 10%),
+                  var(--bg);
+      color:#e6eef9;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.45;
+    }
+
+    /* Canvas sits behind everything */
+    #bg-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      display:block;
+    }
+
+    /* Header */
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:1rem;
+      padding:14px 28px;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{width:52px;height:52px;filter:drop-shadow(0 6px 20px rgba(0,0,0,0.6))}
+    .name{margin:0;font-size:1rem;font-weight:700;letter-spacing:0.6px}
+    .subtitle{margin:0;font-size:0.78rem;color:var(--muted)}
+
+    .top-nav a{
+      color:var(--muted);
+      text-decoration:none;
+      margin-left:18px;
+      font-size:0.95rem;
+    }
+    .top-nav a:hover{color:var(--accent-1)}
+
+    .panel{
+      position:relative;
+      z-index:2;
+      padding:48px 6vw;
+      min-height:36vh;
+    }
+
+    /* Hero */
+    .hero{
+      display:flex;
+      gap:48px;
+      align-items:center;
+      justify-content:space-between;
+      padding-top:80px;
+      padding-bottom:120px;
+    }
+
+    .hero-inner{max-width:54ch}
+    .eyebrow{color:var(--muted);margin:0 0 10px;font-weight:600;font-size:0.9rem}
+    .hero-title{margin:0 0 16px;font-size:2.1rem;line-height:1.05;letter-spacing:-0.6px}
+    .lead{color: #cfe7ff; margin:0 0 18px}
+
+    .btn{
+      background: linear-gradient(90deg,var(--accent-1),var(--accent-2));
+      border: none;
+      color:#041125;
+      padding:10px 18px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow: 0 6px 30px rgba(107,96,255,0.14), inset 0 -2px 6px rgba(0,0,0,0.12);
+    }
+    .btn.outline{background:transparent;color:var(--accent-1);border:1px solid rgba(126,249,255,0.12)}
+    .btn.ghost{background:transparent;color:var(--muted);border:1px dashed rgba(255,255,255,0.02)}
+    .link-ghost{color:var(--muted);text-decoration:none;margin-left:14px}
+
+    .radar{
+      width:240px;height:240px;
+      border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      display:flex;align-items:center;justify-content:center;
+      filter:drop-shadow(0 18px 40px rgba(0,0,0,0.6));
+      backdrop-filter: blur(6px);
+    }
+
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: var(--card-radius);
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(10,14,28,0.6);
+    }
+
+    .about{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}
+    .card{min-height:140px}
+
+    .tilt{transition:transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s; transform-style:preserve-3d}
+    .tilt:focus{outline:2px solid rgba(126,249,255,0.12)}
+
+    .research .timeline{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+    .time-item{display:flex;gap:16px;align-items:flex-start;padding:12px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+    .time-item time{color:var(--muted);min-width:92px;font-size:0.85rem}
+
+    .gallery .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:12px}
+    .proto{background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;transition:transform .25s, box-shadow .25s}
+    .proto:focus, .proto:hover{transform:translateY(-8px)}
+    .proto-vis{height:68px;width:68px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;background:linear-gradient(180deg, rgba(126,249,255,0.04), rgba(107,96,255,0.03));margin-bottom:10px;color:var(--accent-1)}
+
+    .contact .form{display:grid;gap:12px;padding:16px;margin-top:12px}
+    .contact label{display:flex;flex-direction:column;font-size:0.9rem;color:var(--muted)}
+    input, textarea{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:inherit;min-width:0}
+    .form-row{display:flex;gap:12px;align-items:center}
+
+    .site-footer{text-align:center;padding:22px 6vw;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)}
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-1);
+      margin-bottom: 4px;
+    }
+
+    /* Updated styles for universities section */
+    .universities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .university-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding: 24px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.03);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .university-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .university-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .university-logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: linear-gradient(135deg, rgba(126,249,255,0.1), rgba(107,96,255,0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--accent-1);
+    }
+
+    .university-name {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+      color: var(--accent-1);
+    }
+
+    .university-location {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 5px 0 0 0;
+    }
+
+    .university-details {
+      margin-top: 15px;
+    }
+
+    .university-details p {
+      margin: 8px 0;
+      font-size: 0.95rem;
+    }
+
+    .program-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+
+    .program-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .program-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* Comment Section Styles */
+    .comment-section {
+      margin-top: 60px;
+    }
+
+    .comment-form-card {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .comment-form label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .comment-form input,
+    .comment-form textarea {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.04);
+      padding: 12px;
+      border-radius: 8px;
+      color: inherit;
+      margin-top: 5px;
+      font-family: inherit;
+    }
+
+    .comment-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .comment-form button {
+      align-self: flex-start;
+    }
+
+    .success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #041125;
+      padding: 20px 30px;
+      border-radius: 14px;
+      font-weight: 700;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+      z-index: 1000;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .success-message.show {
+      opacity: 1;
+    }
+
+    @media (max-width:900px){
+      .about{grid-template-columns:1fr}
+      .hero{flex-direction:column;align-items:flex-start;padding-bottom:80px}
+      .radar{width:200px;height:200px;margin-top:18px}
+      .universities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none!important;animation:none!important}
+    }
+  </style>
+</head>
+  <body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <img src="{% static 'images/f.svg' %}"
+           alt="O'zbekiston bayrog'i"
+           class="brand-mark"
+           style="width:52px; height:52px; border-radius:8px; object-fit:cover; box-shadow:0 6px 20px rgba(0,0,0,0.6);"/>
+
+      <div>
+        <h1 class="name">Asrorbek Azamov</h1>
+        <p class="subtitle">STUDENT LEADER & SOCIAL INNOVATOR</p>
+      </div>
+    </div>
+
+    <nav class="top-nav" role="navigation" aria-label="Main">
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'research' %}">Research</a>
+      <a href="{% url 'prototypes' %}">Projects</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" role="main">
+    <section id="hero" class="panel hero">
+      <div class="hero-inner">
+        <h2 class="eyebrow">Student at Registan Private School, Fergana</h2>
+        <h3 class="hero-title">Empowering communities through education, environmental action, and youth leadership.</h3>
+        <p class="lead">17-year-old student leader, researcher, and author dedicated to creating positive social impact through innovative projects and cross-cultural collaboration.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">5.0</div>
+            <div>GPA</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">7.5</div>
+            <div>IELTS</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">1380</div>
+            <div>SAT Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">37</div>
+            <div>Research Papers</div>
+          </div>
+        </div>
+
+        <div class="hero-cta" style="margin-top: 20px;">
+          <button class="btn" onclick="scrollToComments()">Contact Me</button>
+          <button class="btn outline">+998 91 129 14 40</button>
+        </div>
+      </div>
+
+      <div class="radar" aria-hidden="true" title="Profile picture">
+        <img src="{% static 'images/1.jpg' %}" alt="Asrorbek Azamov" style="width:100%; height:100%; border-radius:16px; object-fit:cover;">
+      </div>
+    </section>
+
+    <section id="about" class="panel about">
+      <div class="glass card">
+        <h4>About — quick take</h4>
+        <p>Multilingual student leader from Uzbekistan with expertise in educational research, environmental advocacy, and youth development. Author of the ASROR book series and founder of multiple social initiatives.</p>
+        <ul class="meta">
+          <li><strong>Languages:</strong> Uzbek, Russian, English, Turkish, German</li>
+          <li><strong>Skills:</strong> Research, Leadership, Public Speaking, Project Management, Mentorship</li>
+        </ul>
+      </div>
+
+      <div class="glass card tilt" data-tilt tabindex="0">
+        <h4>Selected highlights</h4>
+        <ol>
+          <li>Team Leader for 129 students at Fergana Ecological Group</li>
+          <li>Author of 5-volume ASROR book series for youth</li>
+          <li>Winner of "Yosh Kitobxon" National Television Competition</li>
+          <li>Secured $10,000 funding for AltruVision project</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="research" class="panel research">
+      <h3>Experience & Leadership</h3>
+      <div class="timeline" role="list">
+        <article class="time-item" role="listitem">
+          <time datetime="2023-09">Sep 2023 - Present</time>
+          <div>
+            <h5>Team Leader - Fergana Ecological Group</h5>
+            <p>Led 129 students in environmental campaigns, clean-up drives, and sustainability projects. Coordinated with local schools and authorities to promote ecological education.</p>
+          </div>
+        </article>
+
+        <article class="time-item" role="listitem">
+          <time datetime="2024-06">Jun 2024 - Present</time>
+          <div>
+            <h5>Sub-director - Fergana Youth Parliament</h5>
+            <p>Organized social awareness workshops for 247 students, fostering civic engagement and community involvement.</p>
+          </div>
+        </article>
+
+        <article class="time-item" role="listitem">
+          <time datetime="2024-09">Sep 2024 - Present</time>
+          <div>
+            <h5>Sales Accountant - Fergana Stone Paper Factory</h5>
+            <p>Managed sales documents, prepared invoices, and collaborated with production, logistics, and procurement departments.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="gallery" class="panel gallery">
+      <h3>Projects & Initiatives</h3>
+      <div class="grid">
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">📚</div>
+          <figcaption>
+            <strong>ASROR Book Series</strong>
+            <p>5-volume collection for children and teenagers promoting moral values, with 173 printed copies sold and 583 digital downloads.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">🔄</div>
+          <figcaption>
+            <strong>AltruVision Project</strong>
+            <p>Rehabilitation program for young offenders using education and mentorship, securing $10,000 in funding.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">🌱</div>
+          <figcaption>
+            <strong>New Uzbekistan Initiative</strong>
+            <p>Volunteer teaching program providing free lessons in English, Russian, Math, and IT to kindergarten children.</p>
+          </figcaption>
+        </figure>
+
+        <figure class="proto" tabindex="0">
+          <div class="proto-vis" aria-hidden="true">✍️</div>
+          <figcaption>
+            <strong>Live for Society</strong>
+            <p>Co-founded platform researching and writing articles on social issues, criminalism, and community development.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Universities Section -->
+    <section id="universities" class="panel universities">
+      <h3>Interested Universities</h3>
+      <p>I'm planning to explore higher education opportunities at these prestigious institutions that align with my academic interests and career goals (If get accepted).</p>
+
+      <div class="universities-grid">
+        <div class="glass university-card">
+          <div class="university-header">
+            <div class="university-logo">🇺🇸</div>
+            <div>
+              <h4 class="university-name">Harvard University</h4>
+              <p class="university-location">Cambridge, Massachusetts, USA</p>
+            </div>
+          </div>
+          <div class="university-details">
+            <p><strong>Programs of Interest:</strong></p>
+            <ul class="program-list">
+              <li>Social Studies</li>
+              <li>Government</li>
+              <li>Education Studies</li>
+            </ul>
+            <p><strong>Why Harvard:</strong> World-leading research in education policy and social sciences with opportunities for community engagement.</p>
+          </div>
+        </div>
+
+        <div class="glass university-card">
+          <div class="university-header">
+            <div class="university-logo">🇺🇸</div>
+            <div>
+              <h4 class="university-name">Stanford University</h4>
+              <p class="university-location">Stanford, California, USA</p>
+            </div>
+          </div>
+          <div class="university-details">
+            <p><strong>Programs of Interest:</strong></p>
+            <ul class="program-list">
+              <li>Science, Technology & Society</li>
+              <li>International Relations</li>
+              <li>Public Policy</li>
+            </ul>
+            <p><strong>Why Stanford:</strong> Strong focus on innovation, entrepreneurship, and interdisciplinary approaches to global challenges.</p>
+          </div>
+        </div>
+
+        <div class="glass university-card">
+          <div class="university-header">
+            <div class="university-logo">🇬🇧</div>
+            <div>
+              <h4 class="university-name">University of Oxford</h4>
+              <p class="university-location">Oxford, England, UK</p>
+            </div>
+          </div>
+          <div class="university-details">
+            <p><strong>Programs of Interest:</strong></p>
+            <ul class="program-list">
+              <li>Philosophy, Politics & Economics</li>
+              <li>Education</li>
+              <li>Social Policy</li>
+            </ul>
+            <p><strong>Why Oxford:</strong> Historic institution with excellent programs in social sciences and global policy studies.</p>
+          </div>
+        </div>
+
+        <div class="glass university-card">
+          <div class="university-header">
+            <div class="university-logo">🇨🇦</div>
+            <div>
+              <h4 class="university-name">University of Toronto</h4>
+              <p class="university-location">Toronto, Ontario, Canada</p>
+            </div>
+          </div>
+          <div class="university-details">
+            <p><strong>Programs of Interest:</strong></p>
+            <ul class="program-list">
+              <li>Peace, Conflict & Justice Studies</li>
+              <li>Public Policy</li>
+              <li>Environmental Studies</li>
+            </ul>
+            <p><strong>Why U of T:</strong> Diverse community and strong programs in public policy with focus on environmental sustainability.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comment Section -->
+    <section id="comments" class="panel comment-section">
+      <h3>Leave a Comment</h3>
+      <p>Share your thoughts or feedback about my work and projects.</p>
+
+      <div class="glass card comment-form-card">
+        <form id="comment-form" class="comment-form" method="POST" action="{% url 'index' %}">
+          {% csrf_token %}
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required placeholder="Your name" />
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" required placeholder="Your message"></textarea>
+          </label>
+          <button type="submit" class="btn">Send Comment</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Success Message -->
+  <div id="success-message" class="success-message">
+    Comment has been sent. Thanks for attention!
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 Asrorbek Azamov. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Function to scroll to comments section
+    function scrollToComments() {
+      document.getElementById('comments').scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+
+        // Comment form submission
+    document.getElementById('comment-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.textContent;
+
+      // Disable button and show loading state
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+
+      try {
+        const response = await fetch('{% url 'index' %}', {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: formData
+        });
+
+        // Agar response OK bo'lmasa, xatolik
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          // Show success message
+          const successMessage = document.getElementById('success-message');
+          successMessage.classList.add('show');
+
+          // Reset form
+          form.reset();
+
+          // Hide success message after 3 seconds
+          setTimeout(() => {
+            successMessage.classList.remove('show');
+          }, 3000);
+        } else {
+          // Agar serverdan kelgan xatolik
+          let errorText = 'Error sending comment. ';
+          if (data.errors) {
+            for (let field in data.errors) {
+              errorText += data.errors[field].join(', ');
+            }
+          }
+          alert(errorText);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Network error. Please check your connection and try again.');
+      } finally {
+        // Re-enable button
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
+      }
+    });
+
+    // Simple tilt effect for cards
+    document.querySelectorAll('.tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateY = (x - centerX) / 25;
+        const rotateX = (centerY - y) / 25;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+      });
+    });
+  </script>
+  </body>
+</html>

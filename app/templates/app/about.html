@@ -1,0 +1,265 @@
+{% load static %}
+<!doctype html>
+<html lang="uz" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Asrorbek Azamov</title>
+  <meta name="description" content="About page of Asrorbek Azamov — Student Leader, Researcher, and Social Innovator portfolio." />
+  <style>
+    :root{
+      --bg:#05060a;
+      --glass-1: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --accent-1: #7ef9ff;
+      --accent-2: #6b60ff;
+      --muted: #9aa0b4;
+      --card-radius: 14px;
+      --fw-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--fw-sans);
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(110,90,255,0.06), transparent 10%),
+                  radial-gradient(900px 500px at 90% 90%, rgba(126,249,255,0.03), transparent 10%),
+                  var(--bg);
+      color:#e6eef9;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+      line-height:1.45;
+    }
+
+    /* Canvas sits behind everything */
+    #bg-canvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      display:block;
+    }
+
+    /* Header */
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:30;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:1rem;
+      padding:14px 28px;
+      backdrop-filter: blur(8px) saturate(120%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-mark{width:52px;height:52px;border-radius:8px;object-fit:cover;box-shadow:0 6px 20px rgba(0,0,0,0.6);}
+    .name{margin:0;font-size:1rem;font-weight:700;letter-spacing:0.6px}
+    .subtitle{margin:0;font-size:0.78rem;color:var(--muted)}
+
+    .top-nav a{
+      color:var(--muted);
+      text-decoration:none;
+      margin-left:18px;
+      font-size:0.95rem;
+    }
+    .top-nav a:hover{color:var(--accent-1)}
+
+    .panel{
+      position:relative;
+      z-index:2;
+      padding:48px 6vw;
+      min-height:36vh;
+    }
+
+    .glass{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: var(--card-radius);
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(10,14,28,0.6);
+      margin-bottom: 20px;
+    }
+
+    .about-page {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      min-height: 140px;
+    }
+
+    .tilt{transition:transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s; transform-style:preserve-3d}
+    .tilt:focus{outline:2px solid rgba(126,249,255,0.12)}
+
+    .meta {
+      list-style: none;
+      padding: 0;
+    }
+
+    .meta li {
+      margin-bottom: 8px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-1);
+      margin-bottom: 4px;
+    }
+
+    .site-footer{
+      text-align:center;
+      padding:22px 6vw;
+      color:var(--muted);
+      border-top:1px solid rgba(255,255,255,0.02);
+    }
+
+    @media (max-width:900px){
+      .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .top-nav {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .top-nav a {
+        margin-left: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none!important;animation:none!important}
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header" role="banner">
+    <div class="brand">
+      <img src="{% static 'images/f.svg' %}" alt="O'zbekiston bayrog'i" class="brand-mark" />
+      <div>
+        <h1 class="name">Asrorbek Azamov</h1>
+        <p class="subtitle">STUDENT LEADER & SOCIAL INNOVATOR</p>
+      </div>
+    </div>
+    <nav class="top-nav" role="navigation" aria-label="Main">
+      <a href="{% url 'index' %}">Home</a>
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'research' %}">Projects</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </nav>
+  </header>
+
+  <main id="main" role="main">
+    <section class="panel about-page">
+      <div class="glass card">
+        <h2>About Me</h2>
+        <p>Hello! I'm Astorbek Azamov, a 17-year-old student leader, researcher, and social innovator from Fergana, Uzbekistan. I'm passionate about creating positive change in my community through education, environmental advocacy, and youth development initiatives.</p>
+
+        <p>With fluency in five languages (Uzbek, Russian, English, Turkish, and German), I've been able to bridge cultural divides and collaborate with diverse teams on projects that address social issues and empower young people.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">5.0</div>
+            <div>GPA</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">7.5</div>
+            <div>IELTS</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">1380</div>
+            <div>SAT Score</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">37</div>
+            <div>Research Papers</div>
+          </div>
+        </div>
+
+        <ul class="meta">
+          <li><strong>Education:</strong> Registan Private School, Fergana (Graduating 2026)</li>
+          <li><strong>Skills:</strong> Leadership, Research, Public Speaking, Project Management, Mentorship</li>
+          <li><strong>Interests:</strong> Education Reform, Environmental Sustainability, Youth Empowerment, Creative Writing</li>
+        </ul>
+      </div>
+
+      <div class="glass card tilt" data-tilt tabindex="0">
+        <h3>Selected Highlights</h3>
+        <ol>
+          <li>Led a team of 129 students as Team Leader at Fergana Ecological Group</li>
+          <li>Authored the 5-volume ASROR book series for children and teenagers</li>
+          <li>Winner of "Yosh Kitobxon" National Television Competition (2023)</li>
+          <li>Secured $10,000 funding for AltruVision youth rehabilitation project</li>
+          <li>Organized workshops for 247 students as Sub-director of Fergana Youth Parliament</li>
+          <li>Helped 43 students with university applications, with 19 accepted to American universities</li>
+        </ol>
+      </div>
+
+      <div class="glass card tilt" data-tilt tabindex="0">
+        <h3>Goals & Aspirations</h3>
+        <p>My goal is to continue creating sustainable social impact through education and youth empowerment. I aim to expand the reach of my ASROR book series internationally, develop more programs for at-risk youth, and pursue higher education that will equip me with the skills to drive meaningful change in my community and beyond.</p>
+
+        <p>I believe in the power of education to transform lives and communities, and I'm committed to using my leadership skills and experiences to create opportunities for other young people to reach their full potential.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <small>© <time id="year"></time> Asrorbek Azamov — Student Leader Portfolio</small>
+  </footer>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple tilt effect
+    document.querySelectorAll('.tilt').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateY = (x - centerX) / 25;
+        const rotateX = (centerY - y) / 25;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+      });
+    });
+  </script>
+</body>
+</html>
